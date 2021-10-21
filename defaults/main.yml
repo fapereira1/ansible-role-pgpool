@@ -1,0 +1,65 @@
+---
+
+#- PostgreSQL Information -
+postgres_password: postgres
+postgres_bin_dir: /usr/pgsql-11/bin
+postgres_data_dir: /var/lib/pgsql/11/data
+
+#- PGPool-II User -
+pgpool2_user: pgpool
+pgpool2_group: pgpool
+
+#- PGPool-II Install -
+pgpool2_packages:
+  - postgresql11
+  - postgresql11-libs
+  - pgpool-II-11
+
+pgpool2_extensions:
+  - pgpool_adm
+  - pgpool_recovery
+
+pgpool2_service_name: pgpool-II-11
+pgpool2_sysconfig_file: /etc/sysconfig/pgpool-II-11
+pgpool2_systemd_file: "/usr/lib/systemd/system/{{ pgpool2_service_name }}.service"
+pgpool2_bin_dir: /usr/pgpool-11/bin
+pgpool2_etc_dir: /etc/pgpool-II-11
+pgpool2_log_dir: /var/log/pgpool-II-11
+pgpool2_run_dir: /var/run/pgpool-II-11
+
+# - PGPool-II Configuration -
+pgpool2_hba_config: []
+
+# - PGPool-II backend hosts -
+pgpool2_backend_hosts: []
+
+# - PGPool-II Log Configuration -
+pgpool2_syslog_facility: LOCAL0
+pgpool2_debug_level: 0
+
+# - PGPool-II failover -
+#   Special values:
+#     %d = failed node id
+#     %h = failed node hostname
+#     %p = failed node port number
+#     %D = failed node database cluster path
+#     %m = new master node id
+#     %H = new master node hostname
+#     %r = new master port number
+#     %R = new master database cluster path
+#     %M = old master node id
+#     %P = old primary node id
+#     %% = '%' character
+pgpool2_failover_command: "{{ pgpool2_etc_dir }}/failover.sh %d %h %p %D %m %H %r %R %M %P"
+
+# - PGPool-II WatchDog Configuration -
+pgpool2_trusted_servers: [ "8.8.8.8", "8.8.4.4" ]
+pgpool2_if_cmd_path: /usr/bin
+pgpool2_if_up_cmd: sudo ip
+pgpool2_if_down_cmd: sudo ip
+pgpool2_arping_path: /usr/bin
+pgpool2_arping_cmd: sudo arping
+pgpool2_heartbeat_device: "eth0"
+pgpool2_heartbeat_destinations: []
+pgpool2_other_pgpool_hostnames: []
+
